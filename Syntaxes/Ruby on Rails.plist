@@ -34,12 +34,14 @@
 	     )
 	    ).*$
 	|   [#] .*? \(fold\) \s*+ $         # Sune’s special marker
+	|=begin
 	</string>
 	<key>foldingStopMarker</key>
 	<string>(?x)
 		(   (^|;) \s*+ end   \s*+ ([#].*)? $
 		|   ^     \s*+ [}\]] \s*+ ([#].*)? $
 		|   [#] .*? \(end\) \s*+ $    # Sune’s special marker
+		|   =end
 		)</string>
 	<key>keyEquivalent</key>
 	<string>^~R</string>
