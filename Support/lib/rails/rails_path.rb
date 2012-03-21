@@ -129,15 +129,13 @@ class RailsPath
     buffer.find_respond_to_format
   end
 
+  ROOT_INDICATORS = %w( app config db )
   def rails_root
+    return nil unless TextMate.project_directory
+    ROOT_INDICATORS.each do |root_indicator|
+      return nil unless File.directory?(File.join(TextMate.project_directory, root_indicator))
+    end
     return TextMate.project_directory
-    # TODO: Look for the root_indicators inside TM_PROJECT_DIRECTORY and return nil if not found
-
-    #self.class.root_indicators.each do |i|
-    #  if index = @filepath.index(i)
-    #    return @filepath[0...index]
-    #  end
-    #end
   end
 
   # This is used in :file_type and :rails_path_for_view
@@ -293,7 +291,8 @@ class RailsPath
   end
 
   def wants_haml
-    @wants_html ||= File.file?(File.join(rails_root, "vendor/plugins/haml/", "init.rb"))
+    @wants_html ||= File.file?(File.join(rails_root, "vendor/plugins/haml/", "init.rb")) ||
+      File.read(File.join(rails_root, 'config', 'environment.rb')) =~ /haml/
   end
 
   def stubs
